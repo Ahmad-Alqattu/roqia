@@ -1,0 +1,39 @@
+/* assets/css/responsive.css */
+
+/* Responsive Header */
+@media (max-width: 768px) {
+    .nav-menu {
+        flex-direction: column;
+        display: none;
+    }
+
+    nav {
+        float: none;
+    }
+
+    .search-cart {
+        float: none;
+        margin-top: 10px;
+    }
+
+    .search-bar input {
+        width: 150px;
+    }
+
+    .cart-icon {
+        margin-top: 10px;
+    }
+
+    /* Toggle button for mobile navigation can be added here */
+}
+
+/* Adjust footer for smaller screens */
+@media (max-width: 600px) {
+    .footer-links {
+        flex-direction: column;
+    }
+
+    .footer-links a {
+        margin: 10px 0;
+    }
+}
