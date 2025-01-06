@@ -1,10 +1,8 @@
 <?php
-session_start();
 require_once 'includes/db_connect.php';
 
-if (!isset($_SESSION['user_id'])) {
-    die("Please <a href='login.php'>login</a> to proceed with checkout.");
-}
+require_once 'includes/authorization.php';
+
 
 $user_id = $_SESSION['user_id'];
 
@@ -60,15 +58,12 @@ $stmt->bind_param("id", $user_id, $total_amount);
 $stmt->execute();
 $order_id = $stmt->insert_id; // Get the generated order_id
 
-// Insert order items into "order_items" table
+// Insert order items
 foreach ($order_items as $item) {
     $total = $item['price'] * $item['quantity'];
-    // Corrected SQL: removed the extra comma
     $item_sql = "INSERT INTO order_items (order_id, product_id, quantity, unit_price, total_price) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($item_sql);
 
-
-    // Corrected bind_param: 5 placeholders, 5 types (iiidd)
     $stmt->bind_param("iiidd", $order_id, $item['product_id'], $item['quantity'], $item['price'], $total);
     $stmt->execute();
 }
@@ -80,7 +75,6 @@ $stmt = $conn->prepare($clear_cart_sql);
 $stmt->bind_param("i", $cart_id);
 $stmt->execute();
 
-// Redirect to order success page
 header("Location: account.php");
 exit();
 ?>

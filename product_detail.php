@@ -34,18 +34,22 @@
             </div>
             </div>
             <div class="product-info">
-                <h2>' . htmlspecialchars($product['product_name']) . '</h2>
-                <p>Brand: ' . htmlspecialchars($product['brand_name']) . '</p>
-                <p>Price: ₪' . htmlspecialchars($product['price']) . '</p>
-                <p>Color: ' . htmlspecialchars($product['color']) . '</p>
-                <p>Size: ' . htmlspecialchars($product['size']) . '</p>
-                <p>Description: ' . nl2br(htmlspecialchars($product['description'])) . '</p>
+                <h2>' . $product['product_name'] . '</h2>
+                <p>Brand: ' . $product['brand_name'] . '</p>
+                <p>Price: ₪' . $product['price'] . '</p>
+                <p>Color: ' . $product['color'] . '</p>
+                <p>Size: ' . $product['size'] . '</p>
+                <p>Description: ' . nl2br(($product['description'])) . '</p>
                 
                 <!-- Add to Cart Form -->
                 <form method="POST" action="add_to_cart.php">
                     <input type="hidden" name="product_id" value="' . $product['product_id'] . '">
                     <input type="number" name="quantity" value="1" min="1" required>
                     <button type="submit">Add to Cart</button>
+                </form>
+                       <form method="POST" action="add_to_wishlist.php">
+             
+                    <button type="submit">Add to wishlist</button>
                 </form>
             </div>
         </div>';
@@ -64,8 +68,8 @@
             if (!empty($reviews)) {
                 foreach ($reviews as $review) {
                     echo '<div class="review">
-                            <p><strong>' . htmlspecialchars($review['username']) . '</strong> - Rated ' . $review['rating'] . '/5</p>
-                            <p>' . nl2br(htmlspecialchars($review['review_text'])) . '</p>
+                            <p><strong>' . ($review['username']) . '</strong> - Rated ' . $review['rating'] . '/5</p>
+                            <p>' . nl2br(($review['review_text'])) . '</p>
                             <small>Reviewed on ' . date('F j, Y, g:i a', strtotime($review['created_at'])) . '</small>
                           </div>
                           <hr>';

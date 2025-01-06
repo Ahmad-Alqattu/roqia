@@ -17,6 +17,7 @@
             echo '
             <div class="account-details">
                 <h3>Profile Information</h3>
+
                 <p><strong>Username:</strong> '.$user['username'].'</p>
                 <p><strong>Email:</strong> '.$user['email'].'</p>
                 <p><strong>First Name:</strong> '.$user['first_name'].'</p>
@@ -24,12 +25,14 @@
                 <p><strong>Phone:</strong> '.$user['phone'].'</p>
                 <p><strong>Address:</strong> '.$user['address'].'</p>
                 <a href="edit_profile.php" class="edit-button">Edit Profile</a>
+                <a href="logout.php" class="logout-button">Logout</a>
+
             </div>
 
             <div class="account-orders">
                 <h3>Order History</h3>
-                <!-- Fetch and display user orders -->
                 ';
+                
                 $orders_sql = "SELECT * FROM orders WHERE user_id = $user_id ORDER BY created_at DESC";
                 $orders_result = mysqli_query($conn, $orders_sql);
 
@@ -65,21 +68,19 @@
 
             <div class="account-favorites">
                 <h3>Your Favorites</h3>
-                <!-- Fetch and display favorite products -->
                 ';
                 $wishlist_sql = "SELECT w.*, p.product_name, p.price, pi.image_path FROM wishlist w
                                 JOIN products p ON w.product_id = p.product_id
                                 JOIN product_images pi ON p.product_id = pi.product_id
                                 WHERE w.user_id = $user_id AND pi.is_primary = 1";
                 $wishlist_result = mysqli_query($conn, $wishlist_sql);
-
                 if(mysqli_num_rows($wishlist_result) > 0) {
                     echo '<div class="favorites-grid">';
                     while($fav = mysqli_fetch_assoc($wishlist_result)) {
                         echo '
                         <div class="favorite-card">
                             <a href="product_detail.php?id='.$fav['product_id'].'">
-                                <img src="'.$fav['image_path'].'" alt="'.$fav['product_name'].'">
+                                <img src="assets/images/products/' .$fav['image_path'].'" alt="'.$fav['product_name'].'">
                                 <h4>'.$fav['product_name'].'</h4>
                                 <p>$'.$fav['price'].'</p>
                             </a>

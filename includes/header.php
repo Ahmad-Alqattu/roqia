@@ -7,9 +7,9 @@ $cart_count = 0;
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
-    // SQL query to count total cart items for the logged-in user
+    // count total cart items for the logged in user
     $cart_query = $conn->prepare("
-        SELECT SUM(ci.quantity) AS total_items
+        SELECT SUM(quantity) AS total_items
         FROM cart_items ci
         JOIN cart c ON ci.cart_id = c.cart_id
         WHERE c.user_id = ?
@@ -19,7 +19,7 @@ if (isset($_SESSION['user_id'])) {
 
     $result = $cart_query->get_result();
     if ($row = $result->fetch_assoc()) {
-        $cart_count = $row['total_items'] ?? 0; // Fallback to 0 if null
+        $cart_count = $row['total_items'] ?? 0; 
     }
 }
 ?>

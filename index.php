@@ -2,9 +2,9 @@
 
 <?php include 'includes/header.php'; ?>
 
-<?php include 'product_card.php'; ?> <!-- Include the reusable product card component -->
+<?php include 'product_card.php'; ?> 
 
-<!-- Hero Section -->
+<!-- banner Section -->
 <section class="hero-banner">
     <div class="container">
         <div class="hero-content">
@@ -22,18 +22,17 @@
         <h2>Featured Products</h2>
         <div class="product-grid">
             <?php
-            // include 'includes/db_connect.php';
 
-            // Fetch featured products (limit 6 for homepage)
+            // Fetch featured products from the database)
             $sql = "SELECT p.*, pi.image_path
                     FROM products p
                     LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
-                    LIMIT 6";
+                    LIMIT 12";
             $result = mysqli_query($conn, $sql);
 
             if ($result && mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    renderProductCard($row); // Use the reusable product card component
+                    renderProductCard($row); // Use product card component
                 }
             } else {
                 echo "<p>No featured products available.</p>";

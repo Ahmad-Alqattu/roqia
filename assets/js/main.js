@@ -1,10 +1,7 @@
-// assets/js/main.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Example: Fetch cart count from server or local storage
     updateCartCount();
 
-    // Add event listener for search functionality
     const searchBtn = document.getElementById('searchBtn');
     searchBtn.addEventListener('click', () => {
         const query = document.getElementById('searchInput').value.trim();
@@ -15,33 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// assets/js/main.js
 
 
-
-function addToCart(productId) {
-    fetch('add_to_cart.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `product_id=${productId}&quantity=1`
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert(data.message);
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-
-
-// assets/js/main.js
 
 function changeImage(newSrc) {
     document.getElementById('currentImage').src = newSrc;
 }
 
 
-// assets/js/main.js
 
 function updateCart(cartItemId, newQuantity) {
     if(newQuantity < 1) {
@@ -55,7 +33,7 @@ function updateCart(cartItemId, newQuantity) {
     .then(response => response.json())
     .then(data => {
         if(data.success) {
-            location.reload(); // Refresh the page to update totals
+            location.reload();
         } else {
             alert('Failed to update cart.');
         }
@@ -71,7 +49,7 @@ function removeFromCart(cartItemId) {
         .then(response => response.json())
         .then(data => {
             if(data.success) {
-                location.reload(); // Refresh the page to update cart
+                location.reload(); 
             } else {
                 alert('Failed to remove item from cart.');
             }
@@ -81,7 +59,6 @@ function removeFromCart(cartItemId) {
 }
 
 
-// assets/js/main.js
 
 function removeFromWishlist(wishlistId) {
     if(confirm('Are you sure you want to remove this item from your favorites?')) {
@@ -99,4 +76,3 @@ function removeFromWishlist(wishlistId) {
         .catch(error => console.error('Error:', error));
     }
 }
-

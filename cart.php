@@ -2,13 +2,11 @@
 session_start();
 require_once 'includes/db_connect.php';
 
-if (!isset($_SESSION['user_id'])) {
-    die("Please <a href='login.php'>login</a> to view your cart.");
-}
+require_once 'includes/authorization.php';
+
 
 $user_id = $_SESSION['user_id'];
 
-// Get the cart for the user
 $cart_sql = "SELECT cart_id FROM cart WHERE user_id = ?";
 $stmt = $conn->prepare($cart_sql);
 $stmt->bind_param("i", $user_id);
@@ -19,7 +17,6 @@ if ($cart_result->num_rows > 0) {
     $cart = $cart_result->fetch_assoc();
     $cart_id = $cart['cart_id'];
 
-    // Fetch cart items
     $items_sql = "SELECT ci.cart_item_id, ci.quantity, p.product_id, p.product_name, p.price, pi.image_path 
                   FROM cart_items ci
                   JOIN products p ON ci.product_id = p.product_id
@@ -60,8 +57,12 @@ include 'includes/header.php';
                         <tr>
                             <td class="cart-product">
                                 <img src="<?php echo 'assets/images/products/'.$item['image_path'] ?? 'assets/images/products/default.jpg'; ?>" 
-                                     alt="<?php echo htmlspecialchars($item['product_name']); ?>" class="cart-product-image">
-                                <span><?php echo htmlspecialchars($item['product_name']); ?></span>
+                                     alt="<?php echo $item['product_name']; ?>" class="cart-product-image">
+                                <span>
+                                    <a href="product_detail.php?id=<?php echo $item['product_id']; ?>">
+                                        <?php echo $item['product_name']; ?>
+                                    </a>
+                                </span>
                             </td>
                             <td>₪<?php echo number_format($item['price'], 2); ?></td>
                             <td>

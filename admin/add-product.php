@@ -1,13 +1,12 @@
 <?php
-// admin/add-product.php
 require_once '../includes/db_connect.php';
 require_once 'includes/product-functions.php';
 
 // Check if user is logged in and is an admin
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-    header('Location: login.php');
-    exit();
-}
+// if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+//     header('Location: login.php');
+//     exit();
+// }
 
 $errors = [];
 $success = false;

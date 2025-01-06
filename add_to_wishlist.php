@@ -1,11 +1,10 @@
 <?php
-session_start();
 require_once 'includes/db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the user is logged in
     if (!isset($_SESSION['user_id'])) {
-        header("Location: login.php"); // Redirect to login if not logged in
+        header("Location: login.php"); 
         exit();
     }
 
@@ -46,10 +45,7 @@ if ($check_wishlist->num_rows == 0) {
 
     $insert_wishlist->close();
 } else {
-    // Item already exists
-    echo "Item already in wishlist.";
-  
-    header("Location: wishlist.php"); // Redirect to wishlist page
+    header("Location: wishlist.php");
     exit();
 }
 

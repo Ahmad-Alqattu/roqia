@@ -1,6 +1,6 @@
 <?php include 'includes/db_connect.php'; ?>
 <?php include 'includes/header.php'; ?>
-<?php include 'product_card.php'; ?> <!-- Include the product card -->
+<?php include 'product_card.php'; ?> 
 
 <section class="product-list">
     <div class="container">
@@ -54,7 +54,7 @@
                     LEFT JOIN product_images pi ON p.product_id = pi.product_id AND pi.is_primary = 1
                     WHERE 1=1";
 
-            // Add search filter (matches name, color, size, or brand)
+            // search filter
             if (!empty($search)) {
                 $search = mysqli_real_escape_string($conn, $search);
                 $sql .= " AND (
@@ -65,7 +65,7 @@
                 )";
             }
 
-            // Add additional filters
+            //  additional filters
             if (!empty($color)) {
                 $sql .= " AND p.color = '" . mysqli_real_escape_string($conn, $color) . "'";
             }
@@ -83,7 +83,6 @@
                 $sql .= " ORDER BY p.price DESC";
             }
 
-            // Execute query
             $result = mysqli_query($conn, $sql);
 
             // Display products

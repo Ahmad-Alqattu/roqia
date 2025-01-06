@@ -1,4 +1,3 @@
-<!-- checkout.php -->
 <?php include 'includes/db_connect.php';?>
 
 <?php include 'includes/header.php'; ?>
@@ -7,7 +6,6 @@
     <div class="container">
         <h2>Checkout</h2>
         <?php
-        session_start();
         if(isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
 

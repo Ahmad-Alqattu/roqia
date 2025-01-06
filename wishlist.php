@@ -1,4 +1,7 @@
-<?php include 'includes/header.php'; ?>
+<?php include 'includes/header.php'; 
+require_once 'includes/authorization.php';
+?>
+
 <?php
 
 if (!isset($_SESSION['user_id'])) {
@@ -35,10 +38,14 @@ $result = $stmt->get_result();
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
                             <td class="wishlist-product<?php $user_id ?>">
-                                <img src="<?php echo $row['image_path'] ?? 'assets/images/products/default.jpg'; ?>" 
-                                     alt="<?php echo htmlspecialchars($row['product_name']); ?>" 
+                                <img src="<?php echo 'assets/images/products/'. $row['image_path'] ?? 'assets/images/products/default.jpg'; ?>" 
+                                     alt="<?php echo $row['product_name']; ?>" 
                                      class="wishlist-product-image">
-                                <span><?php echo htmlspecialchars($row['product_name']); ?></span>
+                                <span>
+                                    <a href="product.php?id=<?php echo $row['product_id']; ?>">
+                                        <?php echo $row['product_name']; ?>
+                                    </a>
+                                </span>
                             </td>
                             <td>₪<?php echo number_format($row['price'], 2); ?></td>
                             <td>
