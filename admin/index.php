@@ -1,12 +1,12 @@
 <?php
-// admin/dashboard.php
 require_once '../includes/db_connect.php';
+require_once 'header.php';
 
 // // Check if user is logged in and is an admin
-// if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-//     header('Location: login.php');
-//     exit();
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: login.php');
+    exit();
+}
 
 // Fetch key statistics
 $stats = array();
@@ -53,6 +53,8 @@ $recent_orders = $conn->query("
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
+                <li><a href="manage_categories_brands.php">Categories & Brands</a></li>
+
 
             </ul>
         </aside>

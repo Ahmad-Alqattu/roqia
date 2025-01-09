@@ -55,7 +55,7 @@
                             <td>'.$order['order_status'].'</td>
                             <td>$'.$order['total_amount'].'</td>
                             <td>'.date('F j, Y', strtotime($order['created_at'])).'</td>
-                            <td><a href="order_detail.php?id='.$order['order_id'].'">View</a></td>
+                            <td><a href="view_order.php?id='.$order['order_id'].'">View</a></td>
                         </tr>
                         ';
                     }

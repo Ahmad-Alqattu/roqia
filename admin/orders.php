@@ -1,12 +1,12 @@
 <?php
-// admin/orders.php
 require_once '../includes/db_connect.php';
+require_once 'header.php';
 
 // // Check if user is logged in and is an admin
-// if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-//     header('Location: login.php');
-//     exit();
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: login.php');
+    exit();
+}
 
 // Handle order status updates
 if (isset($_POST['update_status'])) {
@@ -58,6 +58,8 @@ $orders = $conn->query("
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
+                                <li><a href="manage_categories_brands.php">Categories & Brands</a></li>
+
             </ul>
         </aside>
 
@@ -92,20 +94,20 @@ $orders = $conn->query("
                     <tbody>
                         <?php while ($order = $orders->fetch_assoc()): ?>
                         <tr>
-                            <td>#<?php echo $order['order_id']; ?></td>
+                            <td><a href="view_order.php?id=<?php echo $order['order_id']; ?>">#<?php echo $order['order_id']; ?></a></td>
                             <td>
-                                <?php echo htmlspecialchars($order['username']); ?><br>
-                                <small><?php echo htmlspecialchars($order['email']); ?></small>
+                                <?php echo $order['username']; ?><br>
+                                <small><?php echo $order['email']; ?></small>
                             </td>
                             <td><?php echo $order['item_count']; ?> items</td>
                             <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
                             <td>
-                                <span class="status-badge status-<?php echo strtolower($order['order_status']); ?>">
+                                <span class="status-badge status-<?php echo $order['order_status']; ?>">
                                     <?php echo $order['order_status']; ?>
                                 </span>
                             </td>
                             <td>
-                                <span class="status-badge status-<?php echo strtolower($order['payment_status']); ?>">
+                                <span class="status-badge status-<?php echo $order['payment_status']; ?>">
                                     <?php echo $order['payment_status']; ?>
                                 </span>
                             </td>
@@ -124,8 +126,7 @@ $orders = $conn->query("
                                     </select>
                                     <input type="hidden" name="update_status" value="1">
                                 </form>
-                                <!-- <a href="view-order.php?id=<?php echo $order['order_id']; ?>" 
-                                   class="btn btn-primary">View Details</a> -->
+                               
                             </td>
                         </tr>
                         <?php endwhile; ?>

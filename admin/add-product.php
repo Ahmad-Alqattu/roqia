@@ -1,12 +1,13 @@
 <?php
 require_once '../includes/db_connect.php';
 require_once 'includes/product-functions.php';
+require_once 'header.php';
 
 // Check if user is logged in and is an admin
-// if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-//     header('Location: login.php');
-//     exit();
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: login.php');
+    exit();
+}
 
 $errors = [];
 $success = false;
@@ -95,12 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <aside class="sidebar">
             <div class="logo">Raqi Admin</div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
-                <li><a href="users.php">Users</a></li>
-                <li><a href="analytics.php">Analytics</a></li>
-                <li><a href="logout.php">Logout</a></li>
+                <li><a href="manage_categories_brands.php">Categories & Brands</a></li>
             </ul>
         </aside>
 

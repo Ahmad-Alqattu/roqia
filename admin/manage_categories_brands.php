@@ -1,13 +1,13 @@
 <?php
-// admin/manage_categories_brands.php
 require_once '../includes/db_connect.php';
+require_once 'header.php';
 
 // Check if user is logged in and is an admin
 // Uncomment below lines if session and authentication are required
-// if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-//     header('Location: login.php');
-//     exit();
-// }
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: login.php');
+    exit();
+}
 
 // Fetch categories and brands
 $categories = $conn->query("SELECT * FROM categories ORDER BY category_name ASC");
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
         <aside class="sidebar">
             <div class="logo">Raqi Admin</div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
                 <li><a href="manage_categories_brands.php" class="active">Categories & Brands</a></li>
@@ -92,13 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
                         <?php while ($category = $categories->fetch_assoc()): ?>
                         <tr>
                             <td><?php echo $category['category_id']; ?></td>
-                            <td><?php echo htmlspecialchars($category['category_name']); ?></td>
+                            <td><?php echo $category['category_name']; ?></td>
                             <td>
                                 <form method="POST" style="display:inline;">
                                     <input type="hidden" name="type" value="category">
                                     <input type="hidden" name="action" value="edit">
                                     <input type="hidden" name="category_id" value="<?php echo $category['category_id']; ?>">
-                                    <input type="text" name="category_name" value="<?php echo htmlspecialchars($category['category_name']); ?>">
+                                    <input type="text" name="category_name" value="<?php echo $category['category_name']; ?>">
                                     <button type="submit" class="btn btn-primary">Edit</button>
                                 </form>
                                 <form method="POST" style="display:inline;">
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
                         <?php while ($brand = $brands->fetch_assoc()): ?>
                         <tr>
                             <td><?php echo $brand['brand_id']; ?></td>
-                            <td><?php echo htmlspecialchars($brand['brand_name']); ?></td>
+                            <td><?php echo $brand['brand_name']; ?></td>
                             <td>
                                 <form method="POST" style="display:inline;">
                                     <input type="hidden" name="type" value="brand">

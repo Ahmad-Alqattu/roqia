@@ -1,11 +1,12 @@
 <?php
 require_once '../includes/db_connect.php';
+require_once 'header.php';
 
 // Check if user is logged in and is an admin
-// if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-//     header('Location: login.php');
-//     exit();
-// }
+    if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+        header('Location: login.php');
+        exit();
+    }
 
 // Handle product deletion
 if (isset($_POST['delete_product'])) {
@@ -53,6 +54,8 @@ $products = $conn->query("
                 <li><a href="index.php">Dashboard</a></li>
                 <li><a href="products.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
+                <li><a href="manage_categories_brands.php">Categories & Brands</a></li>
+
 
             </ul>
         </aside>
@@ -89,9 +92,9 @@ $products = $conn->query("
                         <?php while ($product = $products->fetch_assoc()): ?>
                         <tr>
                         <td>#<?php echo $product['product_id']; ?></td>
-                            <td><?php echo htmlspecialchars($product['product_name']); ?></td>
-                            <td><?php echo htmlspecialchars($product['brand_name']); ?></td>
-                            <td><?php echo htmlspecialchars($product['category_name']); ?></td>
+                            <td><?php echo $product['product_name']; ?></td>
+                            <td><?php echo $product['brand_name']; ?></td>
+                            <td><?php echo $product['category_name']; ?></td>
                             <td>$<?php echo number_format($product['price'], 2); ?></td>
                             <td><?php echo $product['stock_quantity']; ?></td>
                             <td>

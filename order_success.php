@@ -19,7 +19,7 @@ $order_id = intval($_GET['order_id']);
 <body>
     <div class="container">
         <h1>Order Successfully Placed!</h1>
-        <p>Your order ID is: <strong><?php echo htmlspecialchars($order_id); ?></strong></p>
+        <p>Your order ID is: <strong><?php echo $order_id; ?></strong></p>
         <p>Thank you for your purchase. You can <a href="orders.php">view your orders</a> or <a href="products.php">continue shopping</a>.</p>
     </div>
 </body>
