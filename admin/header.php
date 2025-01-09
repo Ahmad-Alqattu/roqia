@@ -23,6 +23,8 @@ $adminName = ($_SESSION['username']);
             <h1>Admin Panel</h1>
         </div>
         <div class="header-right">
+        <a href="./signup.php" class="btn">add admin</a>
+
             <span>Welcome, <?php echo $adminName; ?></span>
             <a href="../logout.php" class="logout-btn">Logout</a>
         </div>
