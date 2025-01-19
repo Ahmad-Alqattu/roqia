@@ -157,8 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
         <aside class="sidebar">
             <div class="logo">Raqi Admin</div>
             <ul class="sidebar-menu">
-                <li><a href="index.php">Dashboard</a></li>
-                <li><a href="products.php">Products</a></li>
+                <li><a href="index.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
                 <li><a href="manage_categories_brands.php">Categories & Brands</a></li>
             </ul>
@@ -168,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
             <div class="dashboard-card">
                 <div class="card-header">
                     <h1 class="card-title">Edit Product</h1>
-                    <a href="products.php" class="btn btn-primary">Back to Products</a>
+                        <a href="index.php" class="btn btn-primary">Back to Products</a>
                 </div>
 
                 <?php if (!empty($errors)): ?>
@@ -199,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea id="description" name="description" class="form-control" rows="4"><?php echo htmlspecialchars($product['description']); ?></textarea>
+                        <textarea id="description" name="description" class="form-control" rows="4"><?php echo $product['description']; ?></textarea>
                     </div>
 
                     <div class="form-group">
@@ -212,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
                             while ($brand = $brands->fetch_assoc()): ?>
                                 <option value="<?php echo $brand['brand_id']; ?>"
                                     <?php echo ($product['brand_id'] == $brand['brand_id']) ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($brand['brand_name']); ?>
+                                    <?php echo $brand['brand_name']; ?>
                                 </option>
                             <?php endwhile; ?>
                         </select>
@@ -228,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
                             while ($category = $categories->fetch_assoc()): ?>
                                 <option value="<?php echo $category['category_id']; ?>"
                                     <?php echo ($product['category_id'] == $category['category_id']) ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($category['category_name']); ?>
+                                    <?php echo $category['category_name']; ?>
                                 </option>
                             <?php endwhile; ?>
                         </select>
@@ -238,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
                         <label for="price">Price *</label>
                         <input type="number" id="price" name="price" class="form-control" 
                                step="0.01" min="0" 
-                               value="<?php echo htmlspecialchars($product['price']); ?>" 
+                               value="<?php echo $product['price']; ?>" 
                                required>
                     </div>
 
@@ -246,14 +245,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
                         <label for="stock_quantity">Stock Quantity *</label>
                         <input type="number" id="stock_quantity" name="stock_quantity" 
                                class="form-control" min="0" 
-                               value="<?php echo htmlspecialchars($product['stock_quantity']); ?>" 
+                               value="<?php echo $product['stock_quantity']; ?>" 
                                required>
                     </div>
 
                     <div class="form-group">
                         <label for="material">Material</label>
                         <input type="text" id="material" name="material" class="form-control" 
-                               value="<?php echo htmlspecialchars($product['material']); ?>">
+                               value="<?php echo $product['material']; ?>">
                     </div>
 
                     <div class="form-group">
@@ -268,14 +267,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
                     <div class="form-group">
                         <label for="color">Color</label>
                         <input type="text" id="color" name="color" class="form-control" 
-                               value="<?php echo htmlspecialchars($product['color']); ?>">
+                               value="<?php echo $product['color']; ?>">
                     </div>
 
                     <div class="form-group">
                         <label for="product_images">Add More Images (You can select multiple images)</label>
                         <input type="file" id="product_images" name="product_images[]" class="form-control" 
                                accept="image/*" multiple>
-                        <small class="form-text text-muted">You can upload up to 5 images at once. If no primary image exists, the first new image will become primary.</small>
+                        <small class="form-text text-muted">the first new image will become primary.</small>
                     </div>
 
                     <div class="form-group">
@@ -287,12 +286,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_image']) && !
                     </div>
                 </form>
 
-                <!-- Display existing product images after main form -->
+                <!-- Display existing product images  -->
                 <h2>Existing Product Images</h2>
                 <div class="image-preview-container">
                     <?php foreach ($product_images as $img): ?>
                         <div class="image-preview">
-                            <img src="<?php echo htmlspecialchars('../assets/images/products/'.$img['image_path']); ?>" alt="Product Image">
+                            <img src="<?php echo '../assets/images/products/'.$img['image_path']; ?>" alt="Product Image">
                             <?php if ($img['is_primary'] == 1): ?>
                                 <span class="primary-label">Primary</span>+
                             <?php endif; ?>
@@ -328,11 +327,7 @@ document.getElementById('product_images').addEventListener('change', function(e)
     const preview = document.getElementById('image_preview');
     preview.innerHTML = '';
     
-    if (this.files.length > 5) {
-        alert('You can only upload a maximum of 5 images');
-        this.value = '';
-        return;
-    }
+
     
     Array.from(this.files).forEach((file, index) => {
         if (file) {

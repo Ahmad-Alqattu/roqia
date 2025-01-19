@@ -1,5 +1,4 @@
 <?php
-// admin/includes/product-functions.php
 
 function uploadProductImages($files) {
     $uploaded_images = [];

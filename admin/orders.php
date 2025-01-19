@@ -55,8 +55,7 @@ $orders = $conn->query("
         <aside class="sidebar">
             <div class="logo">Raqi Admin</div>
             <ul class="sidebar-menu">
-                <li><a href="index.php">Dashboard</a></li>
-                <li><a href="products.php">Products</a></li>
+                <li><a href="index.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
                                 <li><a href="manage_categories_brands.php">Categories & Brands</a></li>
 
@@ -100,7 +99,7 @@ $orders = $conn->query("
                                 <small><?php echo $order['email']; ?></small>
                             </td>
                             <td><?php echo $order['item_count']; ?> items</td>
-                            <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
+                            <td>₪<?php echo number_format($order['total_amount'], 2); ?></td>
                             <td>
                                 <span class="status-badge status-<?php echo $order['order_status']; ?>">
                                     <?php echo $order['order_status']; ?>

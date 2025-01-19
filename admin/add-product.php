@@ -96,8 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <aside class="sidebar">
             <div class="logo">Raqi Admin</div>
             <ul class="sidebar-menu">
-                <li><a href="index.php">Dashboard</a></li>
-                <li><a href="products.php">Products</a></li>
+                <li><a href="index.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
                 <li><a href="manage_categories_brands.php">Categories & Brands</a></li>
             </ul>
@@ -107,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="dashboard-card">
                 <div class="card-header">
                     <h1 class="card-title">Add New Product</h1>
-                    <a href="products.php" class="btn btn-primary">Back to Products</a>
+                    <a href="index.php" class="btn btn-primary">Back to Products</a>
                 </div>
 
                 <?php if (!empty($errors)): ?>
@@ -200,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <label for="product_images">Product Images (You can select multiple images) *</label>
     <input type="file" id="product_images" name="product_images[]" class="form-control" 
            accept="image/*" multiple required>
-    <small class="form-text text-muted">First image will be set as primary image. Maximum 5 images allowed.</small>
+    <small class="form-text text-muted">First image will be set as primary image.</small>
 </div>
 
 <div class="form-group">

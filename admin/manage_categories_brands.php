@@ -3,7 +3,6 @@ require_once '../includes/db_connect.php';
 require_once 'header.php';
 
 // Check if user is logged in and is an admin
-// Uncomment below lines if session and authentication are required
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     header('Location: login.php');
     exit();
@@ -44,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
         }
     }
 
-    // Redirect to avoid form resubmission
     header('Location: manage_categories_brands.php');
     exit();
 }
@@ -63,8 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['type'])) {
         <aside class="sidebar">
             <div class="logo">Raqi Admin</div>
             <ul class="sidebar-menu">
-                <li><a href="index.php">Dashboard</a></li>
-                <li><a href="products.php">Products</a></li>
+                <li><a href="index.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
                 <li><a href="manage_categories_brands.php" class="active">Categories & Brands</a></li>
             </ul>

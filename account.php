@@ -64,36 +64,7 @@
                     echo "<p>You have no orders.</p>";
                 }
 
-            echo '</div>
-
-            <div class="account-favorites">
-                <h3>Your Favorites</h3>
-                ';
-                $wishlist_sql = "SELECT w.*, p.product_name, p.price, pi.image_path FROM wishlist w
-                                JOIN products p ON w.product_id = p.product_id
-                                JOIN product_images pi ON p.product_id = pi.product_id
-                                WHERE w.user_id = $user_id AND pi.is_primary = 1";
-                $wishlist_result = mysqli_query($conn, $wishlist_sql);
-                if(mysqli_num_rows($wishlist_result) > 0) {
-                    echo '<div class="favorites-grid">';
-                    while($fav = mysqli_fetch_assoc($wishlist_result)) {
-                        echo '
-                        <div class="favorite-card">
-                            <a href="product_detail.php?id='.$fav['product_id'].'">
-                                <img src="assets/images/products/' .$fav['image_path'].'" alt="'.$fav['product_name'].'">
-                                <h4>'.$fav['product_name'].'</h4>
-                                <p>$'.$fav['price'].'</p>
-                            </a>
-                            <button onclick="removeFromWishlist('.$fav['wishlist_id'].')">Remove</button>
-                        </div>
-                        ';
-                    }
-                    echo '</div>';
-                } else {
-                    echo "<p>You have no favorite products.</p>";
-                }
-
-            echo '</div>';
+          
         } else {
             echo "<p>Please <a href='login.php'>login</a> to view your account.</p>";
         }

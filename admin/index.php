@@ -2,38 +2,39 @@
 require_once '../includes/db_connect.php';
 require_once 'header.php';
 
-// // Check if user is logged in and is an admin
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-    header('Location: login.php');
+// Check if user is logged in and is an admin
+    if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+        header('Location: login.php');
+        exit();
+    }
+
+// Handle product deletion
+if (isset($_POST['delete_product'])) {
+    $product_id = (int)$_POST['product_id'];
+    $conn->query("DELETE FROM products WHERE product_id = $product_id");
+    $_SESSION['message'] = "Product deleted successfully.";
+    header('Location: products.php');
     exit();
 }
 
-// Fetch key statistics
-$stats = array();
+// Pagination
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$items_per_page = 10;
+$offset = ($page - 1) * $items_per_page;
 
-// Total Orders
-$result = $conn->query("SELECT COUNT(*) as total FROM orders");
-$stats['total_orders'] = $result->fetch_assoc()['total'];
+// Get total products count
+$total_result = $conn->query("SELECT COUNT(*) as count FROM products");
+$total_products = $total_result->fetch_assoc()['count'];
+$total_pages = ceil($total_products / $items_per_page);
 
-// Total Revenue
-$result = $conn->query("SELECT SUM(total_amount) as revenue FROM orders WHERE order_status != 'Cancelled'");
-$stats['total_revenue'] = $result->fetch_assoc()['revenue'] ?? 0;
-
-// Total Products
-$result = $conn->query("SELECT COUNT(*) as total FROM products");
-$stats['total_products'] = $result->fetch_assoc()['total'];
-
-// Total Users
-$result = $conn->query("SELECT COUNT(*) as total FROM users WHERE user_role = 'customer'");
-$stats['total_users'] = $result->fetch_assoc()['total'];
-
-// Recent Orders
-$recent_orders = $conn->query("
-    SELECT o.*, u.username 
-    FROM orders o 
-    JOIN users u ON o.user_id = u.user_id 
-    ORDER BY o.created_at DESC 
-    LIMIT 5
+// Fetch products with brand and category information
+$products = $conn->query("
+    SELECT p.*, b.brand_name, c.category_name 
+    FROM products p
+    LEFT JOIN brands b ON p.brand_id = b.brand_id
+    LEFT JOIN categories c ON p.category_id = c.category_id
+    ORDER BY p.created_at DESC
+    LIMIT $offset, $items_per_page
 ");
 ?>
 
@@ -42,7 +43,7 @@ $recent_orders = $conn->query("
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Raqi E-commerce</title>
+    <title>Products Management - Raqi E-commerce</title>
     <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
 <body>
@@ -50,8 +51,7 @@ $recent_orders = $conn->query("
         <aside class="sidebar">
             <div class="logo">Raqi Admin</div>
             <ul class="sidebar-menu">
-                <li><a href="index.php">Dashboard</a></li>
-                <li><a href="products.php">Products</a></li>
+                <li><a href="index.php">Products</a></li>
                 <li><a href="orders.php">Orders</a></li>
                 <li><a href="manage_categories_brands.php">Categories & Brands</a></li>
 
@@ -62,57 +62,67 @@ $recent_orders = $conn->query("
         <main class="main-content">
             <div class="dashboard-card">
                 <div class="card-header">
-                    <h1 class="card-title">Dashboard Overview</h1>
-                    <span><?php echo date('F d, Y'); ?></span>
+                    <h1 class="card-title">Products Management</h1>
+                    <a href="add-product.php" class="btn btn-primary">Add New Product</a>
                 </div>
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h3>Total Orders</h3>
-                        <div class="value"><?php echo number_format($stats['total_orders']); ?></div>
+                <?php if (isset($_SESSION['message'])): ?>
+                    <div class="alert alert-success">
+                        <?php 
+                        echo $_SESSION['message'];
+                        unset($_SESSION['message']);
+                        ?>
                     </div>
-                    <div class="stat-card">
-                        <h3>Total Revenue</h3>
-                        <div class="value">$<?php echo number_format($stats['total_revenue'], 2); ?></div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Products</h3>
-                        <div class="value"><?php echo number_format($stats['total_products']); ?></div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Customers</h3>
-                        <div class="value"><?php echo number_format($stats['total_users']); ?></div>
-                    </div>
-                </div>
+                <?php endif; ?>
 
-                <div class="dashboard-card">
-                    <h2 class="card-title">Recent Orders</h2>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($order = $recent_orders->fetch_assoc()): ?>
-                            <tr>
-                                <td>#<?php echo $order['order_id']; ?></td>
-                                <td><?php echo htmlspecialchars($order['username']); ?></td>
-                                <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
-                                <td>
-                                    <span class="status-badge status-<?php echo strtolower($order['order_status']); ?>">
-                                        <?php echo $order['order_status']; ?>
-                                    </span>
-                                </td>
-                                <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
-                            </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Name</th>
+                            <th>Brand</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($product = $products->fetch_assoc()): ?>
+                        <tr>
+                        <td>#<?php echo $product['product_id']; ?></td>
+                            <td><?php echo $product['product_name']; ?></td>
+                            <td><?php echo $product['brand_name']; ?></td>
+                            <td><?php echo $product['category_name']; ?></td>
+                            <td>₪<?php echo number_format($product['price'], 2); ?></td>
+                            <td><?php echo $product['stock_quantity']; ?></td>
+                            <td>
+                                <a href="edit-product.php?id=<?php echo $product['product_id']; ?>" 
+                                   class="btn btn-primary">Edit</a>
+                                <form method="POST" style="display: inline;">
+                                    <input type="hidden" name="product_id" 
+                                           value="<?php echo $product['product_id']; ?>">
+                                    <button type="submit" name="delete_product" 
+                                            class="btn btn-danger" 
+                                            onclick="return confirm('Are you sure you want to delete this product?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <?php if ($total_pages > 1): ?>
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <a href="?page=<?php echo $i; ?>" 
+                               class="<?php echo $page === $i ? 'active' : ''; ?>">
+                                <?php echo $i; ?>
+                            </a>
+                        <?php endfor; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </main>

@@ -55,17 +55,10 @@ if (isset($_SESSION['user_id'])) {
                 <ul>
                     <li><a href="product.php">Products</a></li>
                     <li>
-                        <?php
-                        if (isset($_SESSION['username'])) {
-                            echo '<a href="account.php"> <img src="assets/images/accuont.png" alt="accuont" class="icon"> ' . htmlspecialchars($_SESSION['username']) . '
-</a>';
-                        } else {
-                            echo '<a href="login.php">
-                             <img src="assets/images/accuont.png" alt="accuont" class="icon">Sign In
-                                                       
-</a>';
-                        }
-                        ?>
+                        <a href="account.php">
+                        <img src="assets/images/accuont.png" alt="account" class="icon">
+                        Account</a>
+
                     </li>
                     <li>
                         <a href="wishlist.php">

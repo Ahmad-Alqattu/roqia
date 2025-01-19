@@ -6,7 +6,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['user_role'] !== 'admin') {
     exit();
 }
 
-$adminName = ($_SESSION['username']);
 ?>
 
 <!DOCTYPE html>
@@ -19,13 +18,10 @@ $adminName = ($_SESSION['username']);
 </head>
 <body>
     <header class="admin-header">
-        <div class="header-left">
+        <div>
             <h1>Admin Panel</h1>
         </div>
-        <div class="header-right">
-        <a href="./signup.php" class="btn">add admin</a>
-
-            <span>Welcome, <?php echo $adminName; ?></span>
+        <div>
             <a href="../logout.php" class="logout-btn">Logout</a>
         </div>
     </header>
@@ -44,16 +40,6 @@ $adminName = ($_SESSION['username']);
 .admin-header h1 {
     margin: 0;
     font-size: 24px;
-}
-
-.admin-header .header-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.admin-header .header-right span {
-    font-size: 16px;
 }
 
 .admin-header .logout-btn {

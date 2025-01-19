@@ -83,9 +83,9 @@ if (!$items_result) {
                     <img src="assets/images/products/<?php echo $item['product_image']; ?>" alt="<?php echo $item['product_name']; ?>" class="product-image">
                     <div class="item-details">
                         <p><strong><?php echo $item['product_name']; ?></strong></p>
-                        <p>Price: $<?php echo number_format($item['price'], 2); ?></p>
+                        <p>Price: ₪<?php echo number_format($item['price'], 2); ?></p>
                         <p>Quantity: <?php echo $item['quantity']; ?></p>
-                        <p>Subtotal: $<?php echo number_format($item['price'] * $item['quantity'], 2); ?></p>
+                        <p>Subtotal: ₪<?php echo number_format($item['price'] * $item['quantity'], 2); ?></p>
                     </div>
                 </div>
             <?php endwhile; ?>
